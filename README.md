@@ -2,7 +2,7 @@
 
 # Tarefas
 
-- [ ] Login empregado (Aleph)
+- [X] Login empregado (Aleph)
 - [ ] Bater ponto (Gabriel)
 - [ ] Listar pontos (Gabriel)
 - [ ] Pedir abono (Daniel)
