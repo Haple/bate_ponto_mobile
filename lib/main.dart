@@ -1,5 +1,5 @@
 import 'package:bate_ponto_mobile/comum/widgets/app_route_observer.dart';
-import 'package:bate_ponto_mobile/home.dart';
+import 'package:bate_ponto_mobile/inicio.dart';
 import 'package:flutter/material.dart';
 import 'login.dart';
 
@@ -8,7 +8,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   final rotas = <String, WidgetBuilder>{
     Login.rota: (context) => Login(),
-    Home.rota: (context) => Home(),
+    Inicio.rota: (context) => Inicio(),
   };
 
   @override

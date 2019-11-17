@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bate_ponto_mobile/comum/funcoes/get_token.dart';
 import 'package:bate_ponto_mobile/comum/funcoes/parse_jwt.dart';
-import 'package:bate_ponto_mobile/home.dart';
+import 'package:bate_ponto_mobile/inicio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,7 +33,7 @@ class _LoginState extends State<Login> {
   void _checaUsuarioLogado() async {
     var token = await getToken();
     if (token != null) {
-      Navigator.of(context).pushNamed(Home.rota);
+      Navigator.of(context).pushNamed(Inicio.rota);
     }
   }
 
@@ -48,7 +48,6 @@ class _LoginState extends State<Login> {
 
   void _login() async {
     final url = "https://bate-ponto-backend.herokuapp.com/sessoes";
-    print("login");
     Map<String, String> body = {
       'email': _email.text,
       'senha': _senha.text,
@@ -66,7 +65,7 @@ class _LoginState extends State<Login> {
       if (payload["empregado"] == true) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('token', token);
-        Navigator.of(context).popAndPushNamed(Home.rota);
+        Navigator.of(context).popAndPushNamed(Inicio.rota);
         return;
       }
     }

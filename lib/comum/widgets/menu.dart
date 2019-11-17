@@ -1,5 +1,5 @@
 import 'package:bate_ponto_mobile/comum/funcoes/get_token.dart';
-import 'package:bate_ponto_mobile/home.dart';
+import 'package:bate_ponto_mobile/inicio.dart';
 import 'package:bate_ponto_mobile/login.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -76,11 +76,11 @@ class _MenuState extends State<Menu> with RouteAware {
                 logo,
                 ListTile(
                   leading: const Icon(Icons.home),
-                  title: Text(Home.titulo),
+                  title: Text(Inicio.titulo),
                   onTap: () async {
-                    await _navigateTo(context, Home.rota);
+                    await _navigateTo(context, Inicio.rota);
                   },
-                  selected: _rotaSelecionada == Home.rota,
+                  selected: _rotaSelecionada == Inicio.rota,
                 ),
                 const Divider(),
                 ListTile(

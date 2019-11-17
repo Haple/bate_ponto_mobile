@@ -1,11 +1,10 @@
-# bate-ponto-mobile
+# bate_ponto_mobile
 
 # Tarefas
 
 - [X] Login empregado (Aleph)
-- [ ] Bater ponto (Gabriel)
-- [ ] Listar pontos (Gabriel)
+- [X] Bater ponto (Gabriel)
+- [X] Listar pontos (Gabriel)
 - [ ] Pedir abono (Daniel)
-- [ ] Exibir banco de horas (Daniel)
+- [X] Exibir banco de horas (Daniel)
 - [ ] (Opcional) Lembrete de ponto
-# bate_ponto_mobile
