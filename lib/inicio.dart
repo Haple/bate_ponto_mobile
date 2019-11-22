@@ -1,12 +1,13 @@
+import 'package:bate_ponto_mobile/login.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'comum/funcoes/get_token.dart';
 import 'comum/funcoes/parse_jwt.dart';
 import 'comum/modelos/ponto.dart';
-import 'comum/widgets/menu_scaffold.dart';
 
 class Inicio extends StatefulWidget {
   static String rota = '/inicio';
@@ -83,9 +84,10 @@ class _InicioState extends State<Inicio> {
 
   Widget _botaoBaterPonto() {
     return MaterialButton(
+      height: 80,
       padding: EdgeInsets.all(10),
       minWidth: double.maxFinite, // set minWidth to maxFinite
-      color: Colors.green.shade500,
+      color: Colors.greenAccent.shade700,
       onPressed: _baterPonto,
       child: Text(
         "BATER PONTO",
@@ -105,12 +107,12 @@ class _InicioState extends State<Inicio> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              "Banco de horas: ",
+              "Banco de horas:",
               style: Theme.of(context).textTheme.title,
             ),
             Container(
               child: Text(
-                (bancoHoras >= 0 ? "+" : "") + "$bancoHoras",
+                (bancoHoras >= 0 ? "+" : "") + "${bancoHoras}h",
                 style: TextStyle(
                   fontSize: 24,
                   color: bancoHoras >= 0
@@ -125,82 +127,114 @@ class _InicioState extends State<Inicio> {
     );
   }
 
+  Widget _botaoSair() {
+    return IconButton(
+        icon: Icon(Icons.power_settings_new),
+        onPressed: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.remove('token');
+          Navigator.of(context).pushReplacement(
+            new MaterialPageRoute(
+              builder: (BuildContext context) => Login(),
+            ),
+          );
+        });
+  }
+
   Widget _buildListaPontos(List<Ponto> pontos) {
+    Widget lista = ListView.builder(
+      itemBuilder: (context, index) {
+        Ponto ponto = pontos[index];
+        ponto.criadoEm = new DateFormat("dd/MM/yyyy - HH:mm")
+            .format(DateTime.parse(ponto.criadoEm));
+        return Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 12, left: 12, bottom: 20, right: 12),
+              child: Column(
+                children: [
+                  Text(
+                    "${ponto.criadoEm}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  Container(
+                    // alignment: Alignment.center,
+                    width: 300,
+                    child: Text(
+                      "${ponto.localizacao}",
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+      itemCount: pontos.length,
+    );
+
+    if (pontos.length == 0) lista = Text("Nenhum ponto registrado");
+
     return Center(
       child: Container(
-        alignment: Alignment.centerRight,
+        alignment: Alignment.center,
         constraints: BoxConstraints(
           maxWidth: 800,
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              Ponto ponto = pontos[index];
-              var dataPonto = new DateFormat("dd/MM/yyyy - HH:mm")
-                  .format(DateTime.parse(ponto.criadoEm));
-              return ListTile(
-                title: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      "${dataPonto.toString()}",
-                    ),
-                  ),
-                ),
-              );
-            },
-            itemCount: pontos.length,
-          ),
-        ),
+        child: lista,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return MenuScaffold(
-      key: scaffoldKey,
-      pageTitle: Inicio.titulo,
-      body: SafeArea(
-        child: FutureBuilder(
-          future: _buscaPontos(),
-          builder: (BuildContext context, AsyncSnapshot<List<Ponto>> snapshot) {
-            if (snapshot.hasError) {
-              return Center(
-                child: Text("Não foi possível buscar os pontos"),
-              );
-            } else if (snapshot.connectionState == ConnectionState.done) {
-              List<Ponto> pontos = snapshot.data;
-              Widget botaoBaterPonto = _botaoBaterPonto();
-              Widget banco = _bancoHoras();
-              Widget lista = _buildListaPontos(pontos);
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 16.0),
-                child: Column(
-                  children: <Widget>[
-                    botaoBaterPonto,
-                    banco,
-                    Expanded(
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 16.0),
-                          child: lista,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        ),
+    return SafeArea(
+      child: FutureBuilder(
+        future: _buscaPontos(),
+        builder: (BuildContext context, AsyncSnapshot<List<Ponto>> snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Não foi possível buscar os pontos"),
+            );
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            List<Ponto> pontos = snapshot.data;
+            Widget botaoBaterPonto = _botaoBaterPonto();
+            Widget banco = _bancoHoras();
+            Widget lista = _buildListaPontos(pontos);
+            Widget botaoSair = _botaoSair();
+            return Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[botaoSair],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                    child: botaoBaterPonto,
+                  ),
+                  banco,
+                  Expanded(
+                    child: lista,
+                  )
+                ],
+              ),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     );
   }

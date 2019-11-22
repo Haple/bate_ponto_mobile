@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bate_ponto_mobile/comum/funcoes/get_token.dart';
 import 'package:bate_ponto_mobile/comum/funcoes/parse_jwt.dart';
-import 'package:bate_ponto_mobile/inicio.dart';
+import 'package:bate_ponto_mobile/menu_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,7 +33,11 @@ class _LoginState extends State<Login> {
   void _checaUsuarioLogado() async {
     var token = await getToken();
     if (token != null) {
-      Navigator.of(context).pushNamed(Inicio.rota);
+      Navigator.of(context).pushReplacement(
+        new MaterialPageRoute(
+          builder: (BuildContext context) => MenuShell(),
+        ),
+      );
     }
   }
 
@@ -65,7 +69,11 @@ class _LoginState extends State<Login> {
       if (payload["empregado"] == true) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('token', token);
-        Navigator.of(context).popAndPushNamed(Inicio.rota);
+        Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(
+            builder: (BuildContext context) => MenuShell(),
+          ),
+        );
         return;
       }
     }
@@ -79,13 +87,9 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final logo = Hero(
-      tag: 'logo',
-      child: CircleAvatar(
-        backgroundColor: Colors.transparent,
-        radius: 80.0,
-        child: Image.asset('assets/logo.png'),
-      ),
+    final logo = Image(
+      image: AssetImage("assets/logo.png"),
+      height: 150,
     );
 
     var botaoEntrar = new RaisedButton(
