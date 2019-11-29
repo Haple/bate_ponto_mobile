@@ -12,7 +12,6 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Arial',
       ),
       home: Login(),
-      initialRoute: Login.rota,
       title: 'Bate Ponto',
     );
   }

@@ -1,3 +1,4 @@
+import 'package:bate_ponto_mobile/abono.dart';
 import 'package:bate_ponto_mobile/comum/funcoes/get_token.dart';
 import 'package:bate_ponto_mobile/inicio.dart';
 import 'package:bate_ponto_mobile/login.dart';
@@ -15,8 +16,7 @@ class _MenuShellState extends State<MenuShell> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     Inicio(),
-    Inicio(),
-    // Inicio(),
+    AbonoTela(),
   ];
 
   @override
@@ -44,22 +44,22 @@ class _MenuShellState extends State<MenuShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   actions: <Widget>[
-      //     IconButton(
-      //         icon: Icon(Icons.power_settings_new),
-      //         onPressed: () async {
-      //           SharedPreferences prefs = await SharedPreferences.getInstance();
-      //           prefs.remove('token');
-      //           Navigator.of(context).pushReplacement(
-      //             new MaterialPageRoute(
-      //               builder: (BuildContext context) => Login(),
-      //             ),
-      //           );
-      //         })
-      //   ],
-      //   title: Text('Bate Ponto'),
-      // ),
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.power_settings_new),
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.remove('token');
+                Navigator.of(context).pushReplacement(
+                  new MaterialPageRoute(
+                    builder: (BuildContext context) => Login(),
+                  ),
+                );
+              })
+        ],
+        title: Text('Bate Ponto'),
+      ),
       body: _children[_currentIndex], // new
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped, // new
@@ -73,10 +73,6 @@ class _MenuShellState extends State<MenuShell> {
             icon: Icon(Icons.question_answer),
             title: Text('Abonos'),
           ),
-          // new BottomNavigationBarItem(
-          //   icon: Icon(Icons.person),
-          //   title: Text('Perfil'),
-          // )
         ],
       ),
     );

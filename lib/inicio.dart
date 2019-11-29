@@ -1,9 +1,7 @@
-import 'package:bate_ponto_mobile/login.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'comum/funcoes/get_token.dart';
 import 'comum/funcoes/parse_jwt.dart';
@@ -107,7 +105,7 @@ class _InicioState extends State<Inicio> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              "Banco de horas:",
+              "Saldo atual:",
               style: Theme.of(context).textTheme.title,
             ),
             Container(
@@ -115,6 +113,7 @@ class _InicioState extends State<Inicio> {
                 (bancoHoras >= 0 ? "+" : "") + "${bancoHoras}h",
                 style: TextStyle(
                   fontSize: 24,
+                  fontWeight: FontWeight.bold,
                   color: bancoHoras >= 0
                       ? Colors.green.shade500
                       : Colors.red.shade500,
@@ -125,20 +124,6 @@ class _InicioState extends State<Inicio> {
         ),
       ),
     );
-  }
-
-  Widget _botaoSair() {
-    return IconButton(
-        icon: Icon(Icons.power_settings_new),
-        onPressed: () async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.remove('token');
-          Navigator.of(context).pushReplacement(
-            new MaterialPageRoute(
-              builder: (BuildContext context) => Login(),
-            ),
-          );
-        });
   }
 
   Widget _buildListaPontos(List<Ponto> pontos) {
@@ -208,21 +193,17 @@ class _InicioState extends State<Inicio> {
             Widget botaoBaterPonto = _botaoBaterPonto();
             Widget banco = _bancoHoras();
             Widget lista = _buildListaPontos(pontos);
-            Widget botaoSair = _botaoSair();
             return Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
               child: Column(
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[botaoSair],
-                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                     child: botaoBaterPonto,
                   ),
                   banco,
+                  Divider(),
                   Expanded(
                     child: lista,
                   )
