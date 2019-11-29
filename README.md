@@ -5,6 +5,6 @@
 - [X] Login empregado (Aleph)
 - [X] Bater ponto (Gabriel)
 - [X] Listar pontos (Gabriel)
-- [ ] Pedir abono (Daniel)
+- [X] Pedir abono (Daniel)
 - [X] Exibir banco de horas (Daniel)
 - [ ] (Opcional) Lembrete de ponto
