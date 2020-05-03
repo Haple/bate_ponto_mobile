@@ -33,12 +33,15 @@ class _LoginState extends State<Login> {
   void _checaUsuarioLogado() async {
     var token = await getToken();
     if (token != null) {
-      Navigator.of(context).pushReplacement(
-        new MaterialPageRoute(
-          builder: (BuildContext context) => MenuShell(),
-        ),
-      );
+      _prosseguir();
     }
+  }
+
+  void _prosseguir() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MenuShell()),
+    );
   }
 
   void _entrar() async {
@@ -69,11 +72,7 @@ class _LoginState extends State<Login> {
       if (payload["empregado"] == true) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('token', token);
-        Navigator.of(context).pushReplacement(
-          new MaterialPageRoute(
-            builder: (BuildContext context) => MenuShell(),
-          ),
-        );
+        _prosseguir();
         return;
       }
     }
