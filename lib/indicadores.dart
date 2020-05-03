@@ -48,7 +48,11 @@ class IndicadoresState extends State<Indicadores> {
     if (response.statusCode == 200) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MenuShell()),
+        MaterialPageRoute(
+          builder: (context) => MenuShell(
+            checarIndicador: false,
+          ),
+        ),
       );
     } else {
       exibeAlerta(

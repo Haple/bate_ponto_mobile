@@ -10,6 +10,12 @@ import 'comum/modelos/indicador.dart';
 import 'indicadores.dart';
 
 class MenuShell extends StatefulWidget {
+  final bool checarIndicador;
+
+  const MenuShell({
+    this.checarIndicador = true,
+  });
+
   @override
   State<StatefulWidget> createState() {
     return _MenuShellState();
@@ -27,7 +33,9 @@ class _MenuShellState extends State<MenuShell> {
   void initState() {
     super.initState();
     _checaUsuarioLogado();
-    _checaIndicadorParaResponder();
+    if (widget.checarIndicador) {
+      _checaIndicadorParaResponder();
+    }
   }
 
   void _checaUsuarioLogado() async {
